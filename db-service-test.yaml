@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: test
+  labels:
+    app: cerebro
+    tier: db
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: cerebro
+    tier: db

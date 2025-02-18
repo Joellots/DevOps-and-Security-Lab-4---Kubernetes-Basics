@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: test
+  labels:
+    app: cerebro
+    tier: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cerebro
+      tier: app
+  template:
+    metadata:
+      labels:
+        app: cerebro
+        tier: app
+    spec:
+      containers:
+        - name: django
+          image: joellots/cerebro:app
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_HOST
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: POSTGRES_PASSWORD
+          ports:
+            - containerPort: 8000

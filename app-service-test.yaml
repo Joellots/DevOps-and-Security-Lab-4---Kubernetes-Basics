@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+  namespace: test
+  labels:
+    app: cerebro
+    tier: app
+spec:
+  type: NodePort  
+  ports:
+    - port: 8000
+      targetPort: 8000
+      nodePort: 30011
+  selector:
+    app: cerebro
+    tier: app
